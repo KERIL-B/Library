@@ -22,7 +22,7 @@ public class UserRepository {
     }
 
     public boolean addUser(String login, String password) {
-       try {
+        try {
             if (exists(login)) {
                 throw new UserAlreadyExistsExeption();
             } else {
@@ -41,14 +41,13 @@ public class UserRepository {
         jdbcTemplate.update(query, id);
     }
 
-    public boolean checkPassword(String login, String password)
-    {
-        final String query="SELECT password FROM USERS WHERE login=?";
-        return jdbcTemplate.queryForObject(query, String.class,login).equals(password);
+    public String getPassword(String login) {
+        final String query = "SELECT password FROM USERS WHERE login=?";
+        return jdbcTemplate.queryForObject(query, String.class, login);
     }
 
     private boolean exists(String login) {
         final String query = "SELECT COUNT(*) FROM USERS WHERE login=?";
-        return jdbcTemplate.queryForObject(query, Integer.class,login) == 1;
+        return jdbcTemplate.queryForObject(query, Integer.class, login) == 1;
     }
 }

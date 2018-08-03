@@ -6,22 +6,22 @@ public class Book {
     private int isn;
     private String name;
     private String author;
-    private long user_id;
+    private String user_login;
 
     public Book() {
     }
 
-    public Book(long id, int isn, String name, String author, long user_id) {
+    public Book(long id, int isn, String name, String author, String user_login) {
         this.id = id;
         this.isn = isn;
         this.name = name;
         this.author = author;
-        this.user_id = user_id;
+        this.user_login=user_login;
     }
 
     @Override
     public String toString() {
-        return "[ id: "+id+"; isn: "+isn+"; name: "+name+"; author: "+author+"; user_id: "+user_id+"]";
+        return "[ id: " + id + "; isn: " + isn + "; name: " + name + "; author: " + author + "; user_login: " + user_login + "]";
     }
 
 
@@ -59,11 +59,11 @@ public class Book {
         this.author = author;
     }
 
-    public long getUser_id() {
-        return user_id;
+    public String getUser_login() {
+        return user_login;
     }
 
-    public void setUser_id(long user_id) {
-        this.user_id = user_id;
+    public void setUser_login(String user_login) {
+        this.user_login = user_login;
     }
 }

@@ -17,7 +17,9 @@ public class BookRepository {
     JdbcTemplate jdbcTemplate;
 
     public List<Book> getAllBooks() {
-        final String query = "SELECT * FROM BOOKS";
+        final String query = "SELECT BOOKS.ID, BOOKS.ISN, BOOKS.NAME, BOOKS.AUTHOR, USERS.LOGIN FROM BOOKS\n" +
+                "LEFT JOIN USERS ON BOOKS.USER_ID=USERS.ID\n" +
+                "ORDER BY BOOKS.NAME";
         return jdbcTemplate.query(query, new BookMapper());
     }
 
@@ -26,7 +28,7 @@ public class BookRepository {
             if (exists(isn)) {
                 throw new IsnAlreadyExistsExeption();
             } else {
-                final String query = "INSERT INTO BOOKS (ins,name,author) VALUES (?,?,?)";
+                final String query = "INSERT INTO BOOKS (isn,name,author) VALUES (?,?,?)";
                 jdbcTemplate.update(query, isn, name, author);
                 return true;
             }
@@ -53,7 +55,7 @@ public class BookRepository {
     }
 
     private boolean exists(int isn) {
-        final String query = "SELECT COUNT(*) FROM BOOKS WHERE ins=?";
+        final String query = "SELECT COUNT(*) FROM BOOKS WHERE isn=?";
         return jdbcTemplate.queryForObject(query, Integer.class, isn) == 1;
     }
 }
