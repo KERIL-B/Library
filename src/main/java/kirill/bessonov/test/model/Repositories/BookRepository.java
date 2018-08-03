@@ -28,8 +28,8 @@ public class BookRepository {
             if (exists(isn)) {
                 throw new IsnAlreadyExistsExeption();
             } else {
-                final String query = "INSERT INTO BOOKS (isn,name,author) VALUES (?,?,?)";
-                jdbcTemplate.update(query, isn, name, author);
+                final String query = "INSERT INTO BOOKS (isn,name,author,user_id) VALUES (?,?,?,?)";
+                jdbcTemplate.update(query, isn, name, author,0);
                 return true;
             }
         } catch (IsnAlreadyExistsExeption e) {
@@ -51,7 +51,7 @@ public class BookRepository {
 
     public boolean freeBook(long book_id)
     {
-        return bindUserForBook(book_id,1);
+        return bindUserForBook(book_id,0);
     }
 
     private boolean exists(int isn) {

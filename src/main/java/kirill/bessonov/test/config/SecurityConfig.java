@@ -13,6 +13,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     public static final String REALM_NAME = "My library authentication";
+    public static final String ROLE="USER";
 
     @Autowired
     CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
@@ -24,7 +25,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.csrf().disable()
                 .authorizeRequests()
-                .antMatchers("/**").hasAnyRole("USER")
+                .antMatchers("/**").hasAuthority(ROLE)
                 .and().httpBasic().realmName(REALM_NAME)
                 .authenticationEntryPoint(customAuthenticationEntryPoint);
     }

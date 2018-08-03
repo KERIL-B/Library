@@ -1,6 +1,8 @@
 package kirill.bessonov.test.model.Repositories;
 
 import kirill.bessonov.test.Exeptions.UserAlreadyExistsExeption;
+import kirill.bessonov.test.model.Book;
+import kirill.bessonov.test.model.Mappers.BookMapper;
 import kirill.bessonov.test.model.Mappers.UserMapper;
 import kirill.bessonov.test.model.User;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +14,9 @@ import java.util.List;
 
 @Repository
 public class UserRepository {
+
+    @Autowired
+    private BookRepository bookRepository;
 
     @Autowired
     private JdbcTemplate jdbcTemplate;
@@ -36,9 +41,20 @@ public class UserRepository {
         }
     }
 
-    public void deleteUserById(long id) {
-        final String query = "DELETE FROM USERS WHERE id=?";
-        jdbcTemplate.update(query, id);
+    public void deleteUserByLogin(String login) {
+        final String query1 = "SELECT BOOKS.ID, BOOKS.ISN, BOOKS.NAME, BOOKS.AUTHOR, USERS.LOGIN FROM BOOKS \n" +
+                "LEFT JOIN USERS ON BOOKS.USER_ID=USERS.ID\n" +
+                "WHERE USERS.LOGIN=?\n" +
+                "ORDER BY BOOKS.NAME;";
+        List<Book> books = jdbcTemplate.query(query1, new BookMapper(),login);
+
+        for (Book book : books
+                ) {
+            bookRepository.freeBook(book.getId());
+        }
+
+        final String query2 = "DELETE FROM USERS WHERE login=?";
+        jdbcTemplate.update(query2, login);
     }
 
     public String getPassword(String login) {

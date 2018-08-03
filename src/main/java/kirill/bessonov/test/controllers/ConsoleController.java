@@ -26,6 +26,9 @@ public class ConsoleController implements CommandLineRunner {
     public void run(String... args) throws Exception {
 
         // addSomeData();
+        //bookRepository.bindUserForBook(36,1);
+        // userRepository.deleteUserByLogin("Keril");
+       //userRepository.addUser("Keril", "qwerty");
 
         System.out.println("USERS\n" + (List<User>) userRepository.getAllUsers());
         System.out.println("BOOKS\n" + (List<Book>) bookRepository.getAllBooks());
@@ -49,8 +52,7 @@ public class ConsoleController implements CommandLineRunner {
         bindSomeBooks();
     }
 
-    private void bindSomeBooks()
-    {
+    private void bindSomeBooks() {
         bookRepository.bindUserForBook(36, 1);
         bookRepository.bindUserForBook(34, 4);
         bookRepository.bindUserForBook(33, 2);

@@ -23,7 +23,7 @@ public class CustomUserDetailsService implements UserDetailsService {
     public UserDetails loadUserByUsername(String userName) throws UsernameNotFoundException {
 
         String password=userRepository.getPassword(userName);
-        GrantedAuthority authority = new SimpleGrantedAuthority("USER");
+        GrantedAuthority authority = new SimpleGrantedAuthority(SecurityConfig.ROLE);
 
         BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
         String rawPassword=bCryptPasswordEncoder.encode(password);
