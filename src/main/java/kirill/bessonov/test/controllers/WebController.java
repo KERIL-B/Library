@@ -32,7 +32,6 @@ public class WebController {
     @RequestMapping(value = "/users", method = RequestMethod.GET)
     public String usersController(Model model) {
         model.addAttribute("users", userRepository.getAllUsers());
-        model.addAttribute("addUserForm", new AddUserForm());
         return "users";
     }
 

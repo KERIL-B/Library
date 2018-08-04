@@ -25,11 +25,6 @@ public class ConsoleController implements CommandLineRunner {
     @Override
     public void run(String... args) throws Exception {
 
-        // addSomeData();
-        //bookRepository.bindUserForBook(36,1);
-        // userRepository.deleteUserByLogin("Keril");
-       //userRepository.addUser("Keril", "qwerty");
-
         System.out.println("USERS\n" + (List<User>) userRepository.getAllUsers());
         System.out.println("BOOKS\n" + (List<Book>) bookRepository.getAllBooks());
 
