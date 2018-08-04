@@ -19,39 +19,39 @@ public class BookRepository {
     public List<Book> getAllBooks() {
         final String query = "SELECT BOOKS.ID, BOOKS.ISN, BOOKS.NAME, BOOKS.AUTHOR, USERS.LOGIN FROM BOOKS\n" +
                 "LEFT JOIN USERS ON BOOKS.USER_ID=USERS.ID\n" +
-                "ORDER BY BOOKS.NAME";
+                "ORDER BY BOOKS.AUTHOR";
         return jdbcTemplate.query(query, new BookMapper());
     }
 
     public boolean addBook(int isn, String name, String author) {
         try {
-            if (exists(isn)) {
-                throw new IsnAlreadyExistsExeption();
-            } else {
-                final String query = "INSERT INTO BOOKS (isn,name,author,user_id) VALUES (?,?,?,?)";
-                jdbcTemplate.update(query, isn, name, author,0);
-                return true;
-            }
+            if (name.length() > 0 && name != null && author.length() > 0 && author != null)
+                if (exists(isn)) {
+                    throw new IsnAlreadyExistsExeption();
+                } else {
+                    final String query = "INSERT INTO BOOKS (isn,name,author,user_id) VALUES (?,?,?,?)";
+                    jdbcTemplate.update(query, isn, name, author, 0);
+                    return true;
+                }
+            else return false;
         } catch (IsnAlreadyExistsExeption e) {
             System.out.println("Book with that isn already exists");
             return false;
         }
     }
 
-    public void deleteBookById(long id) {
-        final String query = "DELETE FROM BOOKS WHERE id=?";
-        jdbcTemplate.update(query, id);
+    public void deleteBookByIsn(int isn) {
+        final String query = "DELETE FROM BOOKS WHERE isn=?";
+        jdbcTemplate.update(query, isn);
     }
 
-    public boolean bindUserForBook(long book_id, long user_id)
-    {
-        final String query="UPDATE BOOKS SET user_id=? WHERE id=?";
-        return jdbcTemplate.update(query,user_id,book_id)==1;
+    public boolean bindUserForBook(long book_id, long user_id) {
+        final String query = "UPDATE BOOKS SET user_id=? WHERE id=?";
+        return jdbcTemplate.update(query, user_id, book_id) == 1;
     }
 
-    public boolean freeBook(long book_id)
-    {
-        return bindUserForBook(book_id,0);
+    public boolean freeBook(long book_id) {
+        return bindUserForBook(book_id, 0);
     }
 
     private boolean exists(int isn) {

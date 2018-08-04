@@ -23,9 +23,28 @@
 </nav>
 
 <p></p>
-<a class="waves-effect waves-light btn red accent-1"><i class="material-icons right">add</i>add user</a>
+<button data-target="addUserModal" class="btn modal-trigger waves-effect waves-light  red accent-1">Add user</button>
 <p></p>
 
+<!-- Modal -->
+<div id="addUserModal" class="modal">
+    <div class="modal-content">
+        <form id="addUserForm" th:action="@{/users}"
+              th:object="${addUserForm}" method="POST">
+            <div class="input-field col s6">
+                <input id="login" type="text" class="validate" th:field="*{login}">
+                <label for="login">Login</label>
+            </div>
+            <div class="input-field col s12">
+                <input id="password" type="password" class="validate" th:field="*{password}">
+                <label for="password">Password</label>
+            </div>
+            <input type="submit" value="add" class="modal-close waves-effect waves-light btn-flat red accent-1" />
+        </form>
+    </div>
+</div>
+
+<!-- Users table -->
 <table class="highlight">
     <thead>
     <tr>
@@ -36,7 +55,8 @@
     <tbody id="userTable">
     <tr id="userInfoRow" th:each="user : ${users}">
         <td class="userLogin" th:utext="${user.login}">...</td>
-        <td><a class="btn-floating btn-small waves-effect waves-light  red accent-1" th:href="'deleteUser?login='+${user.login}"><i
+        <td><a class="btn-floating btn-small waves-effect waves-light  red accent-1"
+               th:href="'deleteUser?login='+${user.login}"><i
                 class="material-icons">delete_forever</i></a></td>
     </tr>
     </tbody>
@@ -51,25 +71,10 @@
 <script type="text/javascript"
         src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.js"></script>
 
-
-<!--<script>
-    $(document).ready(function () {
-        $('#userTable').on('click', 'tr', function () {
-            var name = $(this).find('.userLogin').html();
-            var url = "/companyProfile?name=" + name;
-            $(location).attr('href', url);
-            return false;
-        });
-    });
-</script>-->
-
 <script>
-    function delete_user() {
-        var login = $(document).find('.userLogin').html();
-        var url = "/deleteUser?login=" + login;
-        $(location).attr('href', url);
-        return true;
-    }
+    $(document).ready(function () {
+        $('.modal').modal();
+    });
 </script>
 
 </body>

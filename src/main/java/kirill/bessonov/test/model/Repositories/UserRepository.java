@@ -28,13 +28,15 @@ public class UserRepository {
 
     public boolean addUser(String login, String password) {
         try {
-            if (exists(login)) {
-                throw new UserAlreadyExistsExeption();
-            } else {
-                final String query = "INSERT INTO USERS (login,password) VALUES (?,?)";
-                jdbcTemplate.update(query, login, password);
-                return true;
-            }
+            if (login != null && password != null && login.length() > 0 && password.length() > 0)
+                if (exists(login)) {
+                    throw new UserAlreadyExistsExeption();
+                } else {
+                    final String query = "INSERT INTO USERS (login,password) VALUES (?,?)";
+                    jdbcTemplate.update(query, login, password);
+                    return true;
+                }
+            else return false;
         } catch (UserAlreadyExistsExeption e) {
             System.out.println("User already exists");
             return false;
@@ -46,7 +48,7 @@ public class UserRepository {
                 "LEFT JOIN USERS ON BOOKS.USER_ID=USERS.ID\n" +
                 "WHERE USERS.LOGIN=?\n" +
                 "ORDER BY BOOKS.NAME;";
-        List<Book> books = jdbcTemplate.query(query1, new BookMapper(),login);
+        List<Book> books = jdbcTemplate.query(query1, new BookMapper(), login);
 
         for (Book book : books
                 ) {

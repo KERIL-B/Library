@@ -22,7 +22,55 @@
     </div>
 </nav>
 
+<p></p>
+<button data-target="addBookModal" class="btn modal-trigger waves-effect waves-light  red accent-1">Add book</button>
+<p></p>
 
+
+<!-- Modal -->
+<div id="addBookModal" class="modal">
+    <div class="modal-content">
+        <form id="addBookForm" th:action="@{/books}"
+              th:object="${addBookForm}" method="POST">
+            <div class="input-field col s6">
+                <input id="isn" type="text" class="validate" th:field="*{isn}">
+                <label for="isn">isn</label>
+            </div>
+            <div class="input-field col s6">
+                <input id="name" type="text" class="validate" th:field="*{name}">
+                <label for="name">Name</label>
+            </div>
+            <div class="input-field col s6">
+            <input id="author" type="text" class="validate" th:field="*{author}">
+            <label for="author">Author</label>
+        </div>
+            <input type="submit" value="add" class="modal-close waves-effect waves-light btn-flat red accent-1" />
+        </form>
+    </div>
+</div>
+
+<table class="highlight">
+    <thead>
+    <tr>
+        <th>isn</th>
+        <th>name</th>
+        <th>author</th>
+        <th>owner</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody id="bookTable">
+    <tr id="bookInfoRow" th:each="book : ${books}">
+        <td th:utext="${book.isn}">...</td>
+        <td th:utext="${book.name}">...</td>
+        <td th:utext="${book.author}">...</td>
+        <td th:utext="${book.user_login}">...</td>
+        <td><a class="btn-floating btn-small waves-effect waves-light  red accent-1"
+               th:href="'deleteBook?isn='+${book.isn}"><i
+                class="material-icons">delete_forever</i></a></td>
+    </tr>
+    </tbody>
+</table>
 
 
 <!-- Check if errorMessage is not null and not empty -->
@@ -33,6 +81,13 @@
 <script type="text/javascript" th:src="@{/js/materialize.min.js}"></script>
 <script type="text/javascript"
         src="https://cdn.jsdelivr.net/npm/jquery-validation@1.17.0/dist/jquery.validate.js"></script>
+
+
+<script>
+    $(document).ready(function () {
+        $('.modal').modal();
+    });
+</script>
 
 </body>
 </html>
